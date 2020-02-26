@@ -1,0 +1,16 @@
+<section class="jumbotron text-center">
+    <div class="container">
+        <h1 class="jumbotron-heading" data-sly-test="${properties.title}">${properties.title}</h1>
+        <p class="lead text-muted" data-sly-test="${properties.text}">${properties.text}</p>
+        <p>
+            <a data-sly-test="${properties.firstlink && properties.firstbutton}" href="${properties.firstlink}"
+               class="btn btn-primary my-2">
+                ${properties.firstbutton}
+            </a>
+            <a data-sly-test="${properties.secondlink && properties.secondbutton}" href="${properties.secondlink}"
+               class="btn btn-secondary my-2">
+                ${properties.secondbutton}
+            </a>
+        </p>
+    </div>
+</section>
