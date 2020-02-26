@@ -1,0 +1,10 @@
+<div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light">
+    <div class="col-md-5 p-lg-5 mx-auto my-5">
+        <h1 class="display-4 font-weight-normal" data-sly-test="${properties.title}">${properties.title}</h1>
+        <p class="lead font-weight-normal" data-sly-test="${properties.text}">${properties.text}</p>
+        <a data-sly-test="${properties.link && properties.button}" class="btn btn-outline-secondary"
+           href="${properties.link}">${properties.button}</a>
+    </div>
+    <div class="product-device shadow-sm d-none d-md-block"></div>
+    <div class="product-device product-device-2 shadow-sm d-none d-md-block"></div>
+</div>
