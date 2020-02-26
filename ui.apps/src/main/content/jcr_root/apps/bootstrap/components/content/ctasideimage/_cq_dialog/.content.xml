@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0"
+          xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+          jcr:primaryType="nt:unstructured"
+          jcr:title="Properties"
+          sling:resourceType="cq/gui/components/authoring/dialog">
+    <content jcr:primaryType="nt:unstructured"
+             sling:resourceType="granite/ui/components/coral/foundation/fixedcolumns">
+        <items jcr:primaryType="nt:unstructured">
+            <column jcr:primaryType="nt:unstructured"
+                    sling:resourceType="granite/ui/components/coral/foundation/container">
+                <items jcr:primaryType="nt:unstructured">
+                    <title jcr:primaryType="nt:unstructured"
+                           sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                           fieldLabel="Title"
+                           name="./title"/>
+                    <text jcr:primaryType="nt:unstructured"
+                          sling:resourceType="granite/ui/components/coral/foundation/form/textarea"
+                          rows="2"
+                          resize="none"
+                          fieldLabel="Text"
+                          name="./text"/>
+                    <image jcr:primaryType="nt:unstructured"
+                           sling:resourceType="cq/gui/components/authoring/dialog/fileupload"
+                           autoStart="{Boolean}false"
+                           class="cq-droptarget"
+                           fileNameParameter="./fileName"
+                           fileReferenceParameter="./fileReference"
+                           mimeTypes="[image/gif,image/jpeg,image/png,image/tiff,image/svg+xml]"
+                           multiple="{Boolean}false"
+                           name="./image"
+                           title="Image"
+                           uploadUrl="${suffix.path}"
+                           useHTML5="{Boolean}true"
+                           required="{Boolean}true"/>
+                    <alignment jcr:primaryType="nt:unstructured"
+                               sling:resourceType="granite/ui/components/coral/foundation/form/radiogroup"
+                               fieldLabel="Show Top Divider"
+                               name="./alignment">
+                        <items jcr:primaryType="nt:unstructured">
+                            <right jcr:primaryType="nt:unstructured"
+                                   sling:resourceType="granite/ui/components/coral/foundation/form/radio"
+                                   checked="{Boolean}true"
+                                   value="right"
+                                   text="Right"/>
+                            <left jcr:primaryType="nt:unstructured"
+                                  sling:resourceType="granite/ui/components/coral/foundation/form/radio"
+                                  checked="{Boolean}false"
+                                  value="left"
+                                  text="Left"/>
+                        </items>
+                    </alignment>
+                    <topdivider jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
+                                fieldLabel="Show Top Divider"
+                                text="Show Top Divider"
+                                value="{Boolean}true"
+                                checked="{Boolean}false"
+                                name="./topdivider"/>
+                    <bottomdivider jcr:primaryType="nt:unstructured"
+                                   sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
+                                   fieldLabel="Show Bottom Divider"
+                                   text="Show Bottom Divider"
+                                   value="{Boolean}true"
+                                   checked="{Boolean}false"
+                                   name="./bottomdivider"/>
+                </items>
+            </column>
+        </items>
+    </content>
+</jcr:root>

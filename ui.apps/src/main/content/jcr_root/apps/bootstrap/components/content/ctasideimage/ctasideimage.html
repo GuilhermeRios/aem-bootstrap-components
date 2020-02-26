@@ -1,0 +1,41 @@
+<div class="container marketing">
+    <hr data-sly-test="${properties.topdivider}" class="featurette-divider">
+
+    <!-- RIGHT -->
+    <div data-sly-test="${properties.alignment == 'right'}" class="row featurette">
+        <div class="col-md-7">
+            <h2 class="featurette-heading" data-sly-test="${properties.title}">${properties.title}</h2>
+            <p class="lead" data-sly-test="${properties.text}">${properties.text}</p>
+        </div>
+        <div class="col-md-5">
+            <img data-sly-test="${properties.fileReference}" src="${properties.fileReference}" width="100%">
+            <svg data-sly-test="${!properties.fileReference}"
+                 class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500"
+                 height="500" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false"
+                 role="img" aria-label="Placeholder: 500x500"><title>Placeholder</title>
+                <rect width="100%" height="100%" fill="#eee"></rect>
+                <text x="50%" y="50%" fill="#aaa" dy=".3em">500x500</text>
+            </svg>
+        </div>
+    </div>
+
+    <!-- LEFT -->
+    <div data-sly-test="${properties.alignment == 'left'}" class="row featurette">
+        <div class="col-md-7 order-md-2">
+            <h2 class="featurette-heading" data-sly-test="${properties.title}">${properties.title}</h2>
+            <p class="lead" data-sly-test="${properties.text}">${properties.text}</p>
+        </div>
+        <div class="col-md-5 order-md-1">
+            <img data-sly-test="${properties.fileReference}" src="${properties.fileReference}" width="100%">
+            <svg data-sly-test="${!properties.fileReference}"
+                 class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500"
+                 height="500" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false"
+                 role="img" aria-label="Placeholder: 500x500"><title>Placeholder</title>
+                <rect width="100%" height="100%" fill="#eee"></rect>
+                <text x="50%" y="50%" fill="#aaa" dy=".3em">500x500</text>
+            </svg>
+        </div>
+    </div>
+
+    <hr data-sly-test="${properties.bottomdivider}" class="featurette-divider">
+</div>
