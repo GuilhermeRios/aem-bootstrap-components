@@ -62,7 +62,7 @@
                                    fieldLabel="Show Bottom Divider"
                                    text="Show Bottom Divider"
                                    value="{Boolean}true"
-                                   checked="{Boolean}false"
+                                   checked="{Boolean}true"
                                    name="./bottomdivider"/>
                 </items>
             </column>
