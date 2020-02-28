@@ -12,6 +12,7 @@
 .carousel-item {
     height: 32rem;
 }
+
 .carousel-item > img {
     position: absolute;
     top: 0;
