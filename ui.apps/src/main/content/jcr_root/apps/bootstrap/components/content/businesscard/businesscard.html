@@ -1,0 +1,17 @@
+<!-- CARD -->
+<sly data-sly-use.businessCard="com.adobe.aem.bootstrap.components.core.models.BusinessCardModel">
+    <div class="container p-0">
+        <div class="col-12 mb-4 mt-4">
+            <div class="card h-100">
+                <h4 class="card-header">${businessCard.title}</h4>
+                <div class="card-body">
+                    <p class="card-text">${businessCard.text}</p>
+                </div>
+                <div class="card-footer">
+                    <a href="${businessCard.link}" class="btn btn-primary">${businessCard.button}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</sly>
+<!-- CARD -->
