@@ -1,0 +1,19 @@
+<!-- ARTICLE-CARD -->
+<sly data-sly-use.articleModel="com.adobe.aem.bootstrap.components.core.models.BusinessArticleContentFragmentModel">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-sm-6 portfolio-item">
+                <div class="card h-100">
+                    <a href="#"><img class="card-img-top" src="${articleModel.article.cover}" alt=""></a>
+                    <div class="card-body">
+                        <h4 class="card-title">
+                            <a href="#">${articleModel.article.title}</a>
+                        </h4>
+                        <p class="card-text">${articleModel.article.date}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</sly>
+<!-- ARTICLE-CARD -->
