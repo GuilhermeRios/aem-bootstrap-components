@@ -1,19 +1,14 @@
 package com.adobe.aem.bootstrap.components.core.bean;
 
-import com.adobe.granite.asset.api.Asset;
-import com.adobe.granite.asset.api.AssetManager;
-import com.day.cq.commons.date.DateUtil;
-import com.day.cq.commons.date.InvalidDateException;
-
-import java.util.Calendar;
-import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.util.GregorianCalendar;
 
 public class BusinessArticleBean {
 
     private String title;
     private String text;
     private String cover;
-    private String date;
+    private GregorianCalendar date;
 
     public String getTitle() {
         return title;
@@ -39,11 +34,17 @@ public class BusinessArticleBean {
         this.cover = cover;
     }
 
-    public String getDate() {
+    public GregorianCalendar getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(GregorianCalendar date) {
         this.date = date;
+    }
+
+    public String getDateFormated() {
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("dd.MM.YYYY");
+        dateFormatter.setCalendar(this.date);
+        return dateFormatter.format(this.date.getTime());
     }
 }

@@ -1,5 +1,7 @@
 <!-- BLOG CARD  -->
 <sly data-sly-use.articleModel="com.adobe.aem.bootstrap.components.core.models.BusinessArticleListModel">
+    <p>Page: ${articleModel.page}</p>
+    <!--/*<p>Items per page: ${properties.itemsPerPage}</p>*/-->
     <div class="container" data-sly-list.article="${articleModel.articlesList.listIterator}">
         <div class="card mb-4">
             <div class="card-body">
@@ -19,7 +21,7 @@
                 </div>
             </div>
             <div class="card-footer text-muted">
-                Posted on ${article.date} by
+                Posted on ${article.dateFormated} by
                 <a href="#">Start Bootstrap</a>
             </div>
         </div>
