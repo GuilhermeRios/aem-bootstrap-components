@@ -4,24 +4,23 @@ import com.adobe.aem.bootstrap.components.core.bean.BusinessArticleBean;
 
 import com.adobe.cq.dam.cfm.ContentFragment;
 import com.adobe.cq.dam.cfm.FragmentData;
-import jdk.jfr.Name;
+import com.day.cq.search.PredicateGroup;
+import com.day.cq.search.Query;
+import com.day.cq.search.QueryBuilder;
+import com.day.cq.search.result.SearchResult;
 import org.apache.sling.api.SlingHttpServletRequest;
-import org.apache.sling.api.request.RequestParameter;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.models.annotations.DefaultInjectionStrategy;
 import org.apache.sling.models.annotations.Model;
-import org.apache.sling.models.annotations.Optional;
 import org.apache.sling.models.annotations.Via;
-import org.apache.sling.models.annotations.injectorspecific.Self;
 import org.apache.sling.models.annotations.injectorspecific.SlingObject;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+import javax.jcr.Session;
 
-import java.util.ArrayList;
-import java.util.GregorianCalendar;
-import java.util.List;
+import java.util.*;
 
 @Model(adaptables = {SlingHttpServletRequest.class, Resource.class}, defaultInjectionStrategy = DefaultInjectionStrategy.OPTIONAL)
 public class BusinessArticleListModel {
@@ -38,39 +37,46 @@ public class BusinessArticleListModel {
 
     @Inject
     @Via("resource")
-    private int itemsPerPage;
+    private int itemsPerPage = 5;
 
     private List<BusinessArticleBean> articlesList = new ArrayList<>();
-    private List<RequestParameter> requestParameterList;
 
-    private int page = 1;
+    private int currentPage = 1;
+    private String[] currentPageValue;
 
     @PostConstruct
     protected void init() {
-        requestParameterList = request.getRequestParameterList();
+        setCurrentPage();
+
         if (listPath == "#") {
             createArticlePlaceholder();
             return;
         }
-        Resource resource = resourceResolver.getResource(listPath);
-        if (resource.hasChildren()) {
-            for (Resource item : resource.getChildren()) {
-                if (item.getResourceType().equals("nt:unstructured")) {
-                    continue;
-                }
 
-                ContentFragment articleFragment = resourceResolver.getResource(item.getPath()).adaptTo(ContentFragment.class);
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("path", listPath);
+        map.put("type", "dam:Asset");
+        QueryBuilder builder = resourceResolver.adaptTo(QueryBuilder.class);
+        Session session = resourceResolver.adaptTo(Session.class);
+        Query query = builder.createQuery(PredicateGroup.create(map), session);
+        query.setStart(1);
+        query.setHitsPerPage(itemsPerPage);
+        SearchResult result = query.getResult();
 
-                BusinessArticleBean article = new BusinessArticleBean();
-                article.setTitle(articleFragment.getElement("article_title").getContent());
-                article.setText(articleFragment.getElement("article_content").getContent());
-                article.setCover(articleFragment.getElement("article_cover").getContent());
+        Iterator<Resource> resources = result.getResources();
 
-                FragmentData date = articleFragment.getElement("article_date").getValue();
-                article.setDate(((GregorianCalendar) date.getValue()));
+        while (resources.hasNext()) {
+            ContentFragment articleFragment = resourceResolver.getResource(resources.next().getPath()).adaptTo(ContentFragment.class);
 
-                articlesList.add(article);
-            }
+            BusinessArticleBean article = new BusinessArticleBean();
+            article.setTitle(articleFragment.getElement("article_title").getContent());
+            article.setText(articleFragment.getElement("article_content").getContent());
+            article.setCover(articleFragment.getElement("article_cover").getContent());
+
+            FragmentData date = articleFragment.getElement("article_date").getValue();
+            article.setDate(((GregorianCalendar) date.getValue()));
+
+            articlesList.add(article);
         }
     }
 
@@ -91,11 +97,22 @@ public class BusinessArticleListModel {
         return itemsPerPage;
     }
 
-    public int getPage() {
-        return page;
+    private void setCurrentPage() {
+        if (!request.getRequestParameterList().isEmpty()) {
+            currentPageValue = request.getParameterValues("page");
+            if (currentPageValue != null && currentPageValue[0] != null) {
+                currentPage = Integer.parseInt(currentPageValue[0]);
+                return;
+            }
+        }
+        currentPage = 1;
     }
 
-    public void setPage(int page) {
-        this.page = page;
+    public int getCurrentPage() {
+        return currentPage;
+    }
+
+    public int getNextPage() {
+        return currentPage + 1;
     }
 }
