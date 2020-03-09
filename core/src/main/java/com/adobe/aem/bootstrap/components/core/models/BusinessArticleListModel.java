@@ -59,7 +59,7 @@ public class BusinessArticleListModel {
         QueryBuilder builder = resourceResolver.adaptTo(QueryBuilder.class);
         Session session = resourceResolver.adaptTo(Session.class);
         Query query = builder.createQuery(PredicateGroup.create(map), session);
-        query.setStart(1);
+        query.setStart(getQueryStart());
         query.setHitsPerPage(itemsPerPage);
         SearchResult result = query.getResult();
 
@@ -70,6 +70,7 @@ public class BusinessArticleListModel {
 
             BusinessArticleBean article = new BusinessArticleBean();
             article.setTitle(articleFragment.getElement("article_title").getContent());
+            article.setSummary(articleFragment.getElement("article_summary").getContent());
             article.setText(articleFragment.getElement("article_content").getContent());
             article.setCover(articleFragment.getElement("article_cover").getContent());
 
@@ -114,5 +115,9 @@ public class BusinessArticleListModel {
 
     public int getNextPage() {
         return currentPage + 1;
+    }
+
+    private int getQueryStart() {
+        return (currentPage * itemsPerPage) - 1;
     }
 }

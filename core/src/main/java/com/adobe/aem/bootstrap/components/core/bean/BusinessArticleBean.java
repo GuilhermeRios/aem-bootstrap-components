@@ -6,6 +6,7 @@ import java.util.GregorianCalendar;
 public class BusinessArticleBean {
 
     private String title;
+    private String summary;
     private String text;
     private String cover;
     private GregorianCalendar date;
@@ -16,6 +17,14 @@ public class BusinessArticleBean {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getSummary() {
+        return summary;
+    }
+
+    public void setSummary(String summary) {
+        this.summary = summary;
     }
 
     public String getText() {

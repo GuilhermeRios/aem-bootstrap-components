@@ -1,7 +1,7 @@
 <!-- BLOG CARD  -->
 <sly data-sly-use.articleModel="com.adobe.aem.bootstrap.components.core.models.BusinessArticleListModel">
     <p>Page: ${articleModel.currentPage}</p>
-    <p>Items per page: ${properties.itemsPerPage}</p>
+    <p>Items per page: ${articleModel.itemsPerPage}</p>
     <div class="container" data-sly-list.article="${articleModel.articlesList.listIterator}">
         <div class="card mb-4">
             <div class="card-body">
@@ -13,9 +13,7 @@
                     </div>
                     <div class="col-lg-6">
                         <h2 class="card-title">${article.title}</h2>
-                        <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis
-                            aliquid atque, nulla? Quos cum ex quis soluta, a laboriosam. Dicta expedita corporis animi
-                            vero voluptate voluptatibus possimus, veniam magni quis!</p>
+                        <p class="card-text">${article.summary}</p>
                         <a href="#" class="btn btn-primary">Read More &rarr;</a>
                     </div>
                 </div>

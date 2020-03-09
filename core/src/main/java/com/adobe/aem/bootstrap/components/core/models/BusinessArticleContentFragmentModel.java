@@ -35,6 +35,7 @@ public class BusinessArticleContentFragmentModel {
         ContentFragment articleFragment = fragmentPath.adaptTo(ContentFragment.class);
 
         article.setTitle(articleFragment.getElement("article_title").getContent());
+        article.setSummary(articleFragment.getElement("article_summary").getContent());
         article.setText(articleFragment.getElement("article_content").getContent());
         article.setCover(articleFragment.getElement("article_cover").getContent());
 
