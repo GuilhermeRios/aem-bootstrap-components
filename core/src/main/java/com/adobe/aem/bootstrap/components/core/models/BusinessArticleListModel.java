@@ -63,6 +63,9 @@ public class BusinessArticleListModel {
 
         if (searchValue != null && !searchValue.isEmpty()) {
             map.put("fulltext", searchValue);
+//            map.put("1_property", "@jcr:content/jcr:title");
+//            map.put("1_property.value", "%"+searchValue+"%");
+//            map.put("1_property.operation", "like");
         }
 
         map.put("orderby", "@jcr:created");
