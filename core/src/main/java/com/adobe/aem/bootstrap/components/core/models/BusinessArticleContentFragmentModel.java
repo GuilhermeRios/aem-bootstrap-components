@@ -1,6 +1,7 @@
 package com.adobe.aem.bootstrap.components.core.models;
 
 import com.adobe.aem.bootstrap.components.core.bean.BusinessArticleBean;
+import com.adobe.aem.bootstrap.components.core.helpers.BusinessArticleHelper;
 import com.adobe.cq.dam.cfm.*;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.request.RequestParameter;
@@ -20,12 +21,14 @@ public class BusinessArticleContentFragmentModel {
     @Optional
     private Resource fragmentPath;
 
-    private BusinessArticleBean article = new BusinessArticleBean();
+    private BusinessArticleBean article;
+
+    private BusinessArticleHelper articleHelper = new BusinessArticleHelper();
 
     @PostConstruct
     protected void init() {
         if (fragmentPath == null) {
-            createArticlePlaceholder();
+            article = articleHelper.createArticlePlaceholder();
             return;
         }
         setupArticle();
@@ -34,6 +37,7 @@ public class BusinessArticleContentFragmentModel {
     private void setupArticle() {
         ContentFragment articleFragment = fragmentPath.adaptTo(ContentFragment.class);
 
+        article = new BusinessArticleBean();
         article.setTitle(articleFragment.getElement("article_title").getContent());
         article.setSummary(articleFragment.getElement("article_summary").getContent());
         article.setText(articleFragment.getElement("article_content").getContent());
@@ -41,12 +45,6 @@ public class BusinessArticleContentFragmentModel {
 
         FragmentData date = articleFragment.getElement("article_date").getValue();
         article.setDate((date.getValue(GregorianCalendar.class)));
-    }
-
-    private void createArticlePlaceholder() {
-        article.setTitle("Placeholder");
-        article.setText("");
-        article.setCover("https://via.placeholder.com/300");
     }
 
     public BusinessArticleBean getArticle() {

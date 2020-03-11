@@ -2,6 +2,7 @@ package com.adobe.aem.bootstrap.components.core.models;
 
 import com.adobe.aem.bootstrap.components.core.bean.BusinessArticleBean;
 
+import com.adobe.aem.bootstrap.components.core.helpers.BusinessArticleHelper;
 import com.adobe.cq.dam.cfm.ContentFragment;
 import com.adobe.cq.dam.cfm.FragmentData;
 import com.day.cq.search.PredicateGroup;
@@ -39,23 +40,33 @@ public class BusinessArticleListModel {
     @Via("resource")
     private int itemsPerPage = 5;
 
+    private BusinessArticleHelper articleHelper = new BusinessArticleHelper();
     private List<BusinessArticleBean> articlesList = new ArrayList<>();
-
-    private int currentPage = 1;
     private String[] currentPageValue;
+    private int currentPage = 1;
+    private String searchValue;
+    private long totalMatches;
 
     @PostConstruct
     protected void init() {
         setCurrentPage();
+        setSearchValue();
 
         if (listPath == "#") {
-            createArticlePlaceholder();
+            articlesList.add(articleHelper.createArticlePlaceholder());
             return;
         }
 
         Map<String, String> map = new HashMap<String, String>();
         map.put("path", listPath);
         map.put("type", "dam:Asset");
+
+        if (searchValue != null && !searchValue.isEmpty()) {
+            map.put("fulltext", searchValue);
+        }
+
+        map.put("orderby", "@jcr:created");
+        map.put("orderby.sort", "desc");
         QueryBuilder builder = resourceResolver.adaptTo(QueryBuilder.class);
         Session session = resourceResolver.adaptTo(Session.class);
         Query query = builder.createQuery(PredicateGroup.create(map), session);
@@ -63,10 +74,12 @@ public class BusinessArticleListModel {
         query.setHitsPerPage(itemsPerPage);
         SearchResult result = query.getResult();
 
+        totalMatches = result.getTotalMatches();
+
         Iterator<Resource> resources = result.getResources();
 
         while (resources.hasNext()) {
-            ContentFragment articleFragment = resourceResolver.getResource(resources.next().getPath()).adaptTo(ContentFragment.class);
+            ContentFragment articleFragment = resources.next().adaptTo(ContentFragment.class);
 
             BusinessArticleBean article = new BusinessArticleBean();
             article.setTitle(articleFragment.getElement("article_title").getContent());
@@ -81,23 +94,6 @@ public class BusinessArticleListModel {
         }
     }
 
-    private void createArticlePlaceholder() {
-        BusinessArticleBean article = new BusinessArticleBean();
-        article.setTitle("Placeholder");
-        article.setText("");
-        article.setCover("https://via.placeholder.com/300");
-
-        articlesList.add(article);
-    }
-
-    public List<BusinessArticleBean> getArticlesList() {
-        return articlesList;
-    }
-
-    public int getItemsPerPage() {
-        return itemsPerPage;
-    }
-
     private void setCurrentPage() {
         if (!request.getRequestParameterList().isEmpty()) {
             currentPageValue = request.getParameterValues("page");
@@ -109,15 +105,50 @@ public class BusinessArticleListModel {
         currentPage = 1;
     }
 
-    public int getCurrentPage() {
-        return currentPage;
+    private void setSearchValue() {
+        if (!request.getRequestParameterList().isEmpty()) {
+            currentPageValue = request.getParameterValues("search");
+            if (currentPageValue != null && currentPageValue[0] != null) {
+                searchValue = currentPageValue[0];
+            }
+        }
+    }
+
+    public List<BusinessArticleBean> getArticlesList() {
+        return articlesList;
     }
 
     public int getNextPage() {
-        return currentPage + 1;
+        return (currentPage + 1);
     }
 
-    private int getQueryStart() {
-        return (currentPage * itemsPerPage) - 1;
+    public String getNextPageQuery() {
+        String search = "";
+        if (searchValue != null && !searchValue.isEmpty()) {
+            search = "&search=" + searchValue;
+        }
+
+        return "?page=" + (currentPage + 1) + search;
+    }
+
+    public int getPreviousPage() {
+        return (currentPage - 1);
+    }
+
+    public String getPreviousPageQuery() {
+        String search = "";
+        if (searchValue != null && !searchValue.isEmpty()) {
+            search = "&search=" + searchValue;
+        }
+
+        return "?page=" + (currentPage - 1) + search;
+    }
+
+    public int getQueryStart() {
+        return (currentPage - 1) * itemsPerPage;
+    }
+
+    public boolean isLastPage() {
+        return totalMatches <= currentPage * itemsPerPage;
     }
 }

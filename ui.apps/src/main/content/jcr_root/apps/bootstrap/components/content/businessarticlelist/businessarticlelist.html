@@ -1,7 +1,5 @@
 <!-- BLOG CARD  -->
 <sly data-sly-use.articleModel="com.adobe.aem.bootstrap.components.core.models.BusinessArticleListModel">
-    <p>Page: ${articleModel.currentPage}</p>
-    <p>Items per page: ${articleModel.itemsPerPage}</p>
     <div class="container" data-sly-list.article="${articleModel.articlesList.listIterator}">
         <div class="card mb-4">
             <div class="card-body">
@@ -23,6 +21,17 @@
             </div>
         </div>
     </div>
-    <a href="?page=${articleModel.nextPage}">Next Page</a>
+    <div class="container">
+        <div class="row">
+            <ul class="pagination justify-content-center mb-4 mx-auto">
+                <li class="page-item ${articleModel.previousPage <= 0 ? 'disabled' : ''}">
+                    <a class="page-link" href="${articleModel.previousPageQuery}">← Older</a>
+                </li>
+                <li class="page-item ${articleModel.lastPage ? 'disabled' : ''}">
+                    <a class="page-link" href="${articleModel.nextPageQuery}">Newer →</a>
+                </li>
+            </ul>
+        </div>
+    </div>
 </sly>
 <!-- BLOG CARD -->

@@ -1,0 +1,17 @@
+<!-- SEARCH -->
+<sly data-sly-use.businessArticleSearch="com.adobe.aem.bootstrap.components.core.models.BusinessArticleSearchModel">
+    <div class="container">
+        <div class="card mb-4">
+            <h5 class="card-header">Search</h5>
+            <div class="card-body">
+                <form>
+                    <div class="input-group">
+                        <input type="text" class="form-control mb-4" placeholder="Search for..." name="search" value="${businessArticleSearch.searchValue}">
+                    </div>
+                    <span class="input-group-btn"><button class="btn btn-secondary" type="submit">Go!</button></span>
+                </form>
+            </div>
+        </div>
+    </div>
+</sly>
+<!-- SEARCH -->
