@@ -1,0 +1,20 @@
+<!-- ARTICLE-PAGE -->
+<sly data-sly-use.articleModel="com.adobe.aem.bootstrap.components.core.models.BusinessArticlePageModel">
+    <div class="container">
+        <h1 class="mt-4 mb-3">${articleModel.article.title}
+            <small>by ${articleModel.article.author}</small>
+        </h1>
+        <div class="row">
+            <div class="col-lg-12">
+                <img class="img-fluid rounded" src="${articleModel.article.cover}" alt="">
+                <hr>
+                <p>Posted on ${articleModel.article.dateFormated}</p>
+                <hr>
+            </div>
+            <div class="col-lg-12">
+                ${articleModel.article.text @ context='html'}
+            </div>
+        </div>
+    </div>
+</sly>
+<!-- ARTICLE-PAGE -->

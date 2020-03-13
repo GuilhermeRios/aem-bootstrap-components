@@ -2,6 +2,7 @@ package com.adobe.aem.bootstrap.components.core.bean;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.apache.jackrabbit.api.security.user.Authorizable;
 
 import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
@@ -14,6 +15,7 @@ public class BusinessArticleBean {
     private String text;
     private String cover;
     private GregorianCalendar date;
+    private Authorizable author;
 
     public String getTitle() {
         return title;
@@ -55,10 +57,18 @@ public class BusinessArticleBean {
         this.date = date;
     }
 
-//    @JsonIgnore
+    //    @JsonIgnore
     public String getDateFormated() {
         SimpleDateFormat dateFormatter = new SimpleDateFormat("dd.MM.YYYY");
         dateFormatter.setCalendar(this.date);
         return dateFormatter.format(this.date.getTime());
+    }
+
+    public Authorizable getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(Authorizable author) {
+        this.author = author;
     }
 }

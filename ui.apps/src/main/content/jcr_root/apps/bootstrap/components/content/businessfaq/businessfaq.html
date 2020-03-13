@@ -1,0 +1,25 @@
+<!-- FAQ -->
+<sly data-sly-use.businessFAQ="com.adobe.aem.bootstrap.components.core.models.BusinessFAQModel">
+    <div class="container">
+        <div class="mb-4" id="accordion" role="tablist" aria-multiselectable="true"
+             data-sly-list.faq="${businessFAQ.faqList}">
+            <div class="card">
+                <div class="card-header" role="tab" id="heading_${faqList.index}">
+                    <h5 class="mb-0">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse_${faqList.index}"
+                           aria-expanded="${faqList.first ? 'true' : 'false'}"
+                           aria-controls="collapse_${faqList.index}">${faq.question}</a>
+                    </h5>
+                </div>
+
+                <div id="collapse_${faqList.index}" class="collapse ${faqList.first ? 'show' : ''}" role="tabpanel"
+                     aria-labelledby="heading_${faqList.index}">
+                    <div class="card-body">
+                        ${faq.answer}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</sly>
+<!-- CTA -->

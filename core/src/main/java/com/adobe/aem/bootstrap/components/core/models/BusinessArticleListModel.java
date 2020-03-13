@@ -4,14 +4,16 @@ import com.adobe.aem.bootstrap.components.core.bean.BusinessArticleBean;
 
 import com.adobe.aem.bootstrap.components.core.helpers.BusinessArticleHelper;
 import com.adobe.cq.dam.cfm.ContentFragment;
-import com.adobe.cq.dam.cfm.FragmentData;
 import com.day.cq.search.PredicateGroup;
 import com.day.cq.search.Query;
 import com.day.cq.search.QueryBuilder;
 import com.day.cq.search.result.SearchResult;
+import org.apache.jackrabbit.api.security.user.Authorizable;
+import org.apache.jackrabbit.api.security.user.UserManager;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
+import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.models.annotations.DefaultInjectionStrategy;
 import org.apache.sling.models.annotations.Model;
 import org.apache.sling.models.annotations.Via;
@@ -19,6 +21,7 @@ import org.apache.sling.models.annotations.injectorspecific.SlingObject;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 
 import java.util.*;
@@ -48,7 +51,7 @@ public class BusinessArticleListModel {
     private long totalMatches;
 
     @PostConstruct
-    protected void init() {
+    protected void init() throws RepositoryException {
         setCurrentPage();
         setSearchValue();
 
@@ -70,8 +73,10 @@ public class BusinessArticleListModel {
 
         map.put("orderby", "@jcr:created");
         map.put("orderby.sort", "desc");
+
         QueryBuilder builder = resourceResolver.adaptTo(QueryBuilder.class);
         Session session = resourceResolver.adaptTo(Session.class);
+
         Query query = builder.createQuery(PredicateGroup.create(map), session);
         query.setStart(getQueryStart());
         query.setHitsPerPage(itemsPerPage);
@@ -81,8 +86,13 @@ public class BusinessArticleListModel {
 
         Iterator<Resource> resources = result.getResources();
 
+        UserManager userManager = resourceResolver.adaptTo(UserManager.class);
+
         while (resources.hasNext()) {
-            ContentFragment articleFragment = resources.next().adaptTo(ContentFragment.class);
+            Resource articleResource = resources.next();
+            ContentFragment articleFragment = articleResource.adaptTo(ContentFragment.class);
+
+            ValueMap properties = articleResource.adaptTo(ValueMap.class);
 
             BusinessArticleBean article = new BusinessArticleBean();
             article.setTitle(articleFragment.getElement("article_title").getContent());
@@ -90,8 +100,11 @@ public class BusinessArticleListModel {
             article.setText(articleFragment.getElement("article_content").getContent());
             article.setCover(articleFragment.getElement("article_cover").getContent());
 
-            FragmentData date = articleFragment.getElement("article_date").getValue();
-            article.setDate(((GregorianCalendar) date.getValue()));
+            Authorizable author = userManager.getAuthorizable(properties.get("jcr:createdBy", (String) null));
+            article.setAuthor(author);
+
+            GregorianCalendar date = properties.get("jcr:created", (GregorianCalendar) null);
+            article.setDate(date);
 
             articlesList.add(article);
         }
