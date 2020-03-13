@@ -1,8 +1,12 @@
 package com.adobe.aem.bootstrap.components.core.bean;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 
+//@JsonIgnoreProperties({"date"})
 public class BusinessArticleBean {
 
     private String title;
@@ -51,6 +55,7 @@ public class BusinessArticleBean {
         this.date = date;
     }
 
+//    @JsonIgnore
     public String getDateFormated() {
         SimpleDateFormat dateFormatter = new SimpleDateFormat("dd.MM.YYYY");
         dateFormatter.setCalendar(this.date);

@@ -3,6 +3,8 @@ package com.adobe.aem.bootstrap.components.core.models;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.models.annotations.Model;
 import org.apache.sling.models.annotations.Optional;
+import org.apache.sling.models.annotations.Via;
+import org.apache.sling.models.annotations.injectorspecific.Self;
 
 import javax.inject.Inject;
 
