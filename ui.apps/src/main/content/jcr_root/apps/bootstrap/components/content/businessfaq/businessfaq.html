@@ -7,15 +7,16 @@
                 <div class="card-header" role="tab" id="heading_${faqList.index}">
                     <h5 class="mb-0">
                         <a data-toggle="collapse" data-parent="#accordion" href="#collapse_${faqList.index}"
-                           aria-expanded="${faqList.first ? 'true' : 'false'}"
+                           aria-expanded="${wcmmode.edit || wcmmode.preview || faqList.first ? 'true' : 'false'}"
                            aria-controls="collapse_${faqList.index}">${faq.question}</a>
                     </h5>
                 </div>
 
-                <div id="collapse_${faqList.index}" class="collapse ${faqList.first ? 'show' : ''}" role="tabpanel"
+                <div id="collapse_${faqList.index}"
+                     class="collapse ${wcmmode.edit || wcmmode.preview || faqList.first ? 'show' : ''}" role="tabpanel"
                      aria-labelledby="heading_${faqList.index}">
                     <div class="card-body">
-                        ${faq.answer}
+                        <sly data-sly-resource="${faqList.index @ resourceType='wcm/foundation/components/parsys'}"></sly>
                     </div>
                 </div>
             </div>
